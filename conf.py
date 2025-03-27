@@ -1,0 +1,7 @@
+TARGET_TEXT = "WIN"
+SMALL_IMAGES_DIR = "images"
+OUTPUT_PATH = "youbang_poster.jpg"
+OUTPUT_SIZE = (7680, 4320)
+SMALL_IMG_SIZE = (60, 60)
+FONT_PATH = None
+FONT_SIZE = 1800

@@ -2,6 +2,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 import math
 import random
+from conf import TARGET_TEXT, SMALL_IMAGES_DIR, OUTPUT_PATH, OUTPUT_SIZE, SMALL_IMG_SIZE, FONT_PATH, FONT_SIZE
 
 
 def resize_with_crop(img, target_size):
@@ -32,11 +33,11 @@ def load_small_images(directory, target_size):
                 img = resize_with_crop(img, target_size)
                 small_images.append(img)
             except Exception as e:
-                print(f"无法加载图片: {filename}, 错误: {e}")
+                print(f"Failed to load image: {filename}, Error: {e}")
     return small_images
 
 
-def create_text_image(text, output_size, font_path=None, font_size=1800):
+def create_text_image(text, output_size, font_path=FONT_PATH, font_size=FONT_SIZE):
     """Create a grayscale image with the target text."""
     temp_img = Image.new('L', output_size, 0)
     draw = ImageDraw.Draw(temp_img)
@@ -59,7 +60,7 @@ def load_font(font_path, font_size):
         try:
             return ImageFont.truetype("msyh.ttc", font_size)
         except:
-            print("警告: 未找到中文字体，可能无法正确显示中文")
+            print("Warning: No Chinese font found, text may not display correctly")
             return ImageFont.load_default()
 
 
@@ -96,7 +97,7 @@ def create_character_mosaic(target_text, small_images_dir, output_path, output_s
     """Main function to create a character mosaic."""
     small_images = load_small_images(small_images_dir, (100, 100))
     if not small_images:
-        raise ValueError("没有找到可用的图片")
+        raise ValueError("No usable images found")
 
     temp_img = create_text_image(target_text, output_size)
     cols = math.ceil(output_size[0] / small_img_size[0])
@@ -106,7 +107,7 @@ def create_character_mosaic(target_text, small_images_dir, output_path, output_s
     paste_small_images(small_images, rows, cols, small_img_size, temp_img, output_img)
 
     output_img.save(output_path)
-    print(f"图片已保存到: {output_path}")
+    print(f"Image saved to: {output_path}")
 
 
 if __name__ == "__main__":
@@ -116,6 +117,12 @@ if __name__ == "__main__":
 
     if not os.path.exists(small_images_dir):
         os.makedirs(small_images_dir)
-        print(f"请将小图片放入 {small_images_dir} 目录中")
+        print(f"Please place small images in the {small_images_dir} directory")
     else:
-        create_character_mosaic(target_text, small_images_dir, output_path)
+        create_character_mosaic(
+            target_text=TARGET_TEXT,
+            small_images_dir=SMALL_IMAGES_DIR,
+            output_path=OUTPUT_PATH,
+            output_size=OUTPUT_SIZE,
+            small_img_size=SMALL_IMG_SIZE
+        )
