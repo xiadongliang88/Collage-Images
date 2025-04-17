@@ -100,6 +100,8 @@ def create_character_mosaic(target_text, small_images_dir, output_path, output_s
         raise ValueError("No usable images found")
 
     temp_img = create_text_image(target_text, output_size)
+    # print('temp_img')
+    # temp_img.save('temp_img.jpg')
     cols = math.ceil(output_size[0] / small_img_size[0])
     rows = math.ceil(output_size[1] / small_img_size[1])
 
@@ -111,7 +113,7 @@ def create_character_mosaic(target_text, small_images_dir, output_path, output_s
 
 
 if __name__ == "__main__":
-    target_text = "WIN"
+    target_text = "友邦"
     small_images_dir = "images"
     output_path = "youbang_poster.jpg"
 
